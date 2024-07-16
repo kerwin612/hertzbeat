@@ -29,6 +29,7 @@ import { TransferChange, TransferItem } from 'ng-zorro-antd/transfer';
 import { NzUploadChangeParam } from 'ng-zorro-antd/upload';
 import { zip } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
+import { QueryBuilderConfig, QueryBuilderClassNames } from 'ngx-query-builder';
 
 import { AlertDefine } from '../../../pojo/AlertDefine';
 import { AlertDefineBind } from '../../../pojo/AlertDefineBind';
@@ -43,7 +44,7 @@ const AVAILABILITY = 'availability';
 @Component({
   selector: 'app-alert-setting',
   templateUrl: './alert-setting.component.html',
-  styles: []
+  styleUrls: ['./alert-setting.component.less']
 })
 export class AlertSettingComponent implements OnInit {
   constructor(
@@ -70,6 +71,38 @@ export class AlertSettingComponent implements OnInit {
   switchExportTypeModalFooter: ModalButtonOptions[] = [
     { label: this.i18nSvc.fanyi('common.button.cancel'), type: 'default', onClick: () => (this.isSwitchExportTypeModalVisible = false) }
   ];
+  qbClassNames: QueryBuilderClassNames = {
+  };
+  currentConfig: QueryBuilderConfig = {
+    fields: {
+      age: {name: 'Age', type: 'number'},
+      gender: {
+        name: 'Gender',
+        type: 'category',
+        options: [
+          {name: 'Male', value: 'm'},
+          {name: 'Female', value: 'f'}
+        ]
+      },
+      name: {name: 'Name', type: 'string'},
+      notes: {name: 'Notes', type: 'textarea', operators: ['=', '!=']},
+      educated: {name: 'College Degree?', type: 'boolean'},
+      birthday: {name: 'Birthday', type: 'date', operators: ['=', '<=', '>'],
+        defaultValue: (() => new Date())
+      },
+      school: {name: 'School', type: 'string', nullable: true},
+      occupation: {
+        name: 'Occupation',
+        type: 'category',
+        options: [
+          {name: 'Student', value: 'student'},
+          {name: 'Teacher', value: 'teacher'},
+          {name: 'Unemployed', value: 'unemployed'},
+          {name: 'Scientist', value: 'scientist'}
+        ]
+      }
+    }
+  };
   ngOnInit(): void {
     this.loadAlertDefineTable();
     // 查询监控层级

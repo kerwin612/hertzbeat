@@ -208,6 +208,59 @@
           {{ 'alert.setting.rule' | i18n }}
         </nz-form-label>
         <nz-form-control [nzSpan]="12" [nzErrorTip]="'validation.required' | i18n">
+          <ngx-query-builder [classNames]='qbClassNames' [config]='currentConfig'>
+            <ng-container *querySwitchGroup="let rule; let onChange=onChange; let getDisabledState=getDisabledState">
+              <nz-radio-group style="text-wrap: nowrap;" [(ngModel)]="rule.condition" (ngModelChange)="onChange(rule.condition)" nzButtonStyle="solid" [required]="true" [ngModelOptions]="{standalone: true}">
+                <label nz-radio-button [nzValue]="'and'">AND</label>
+                <label nz-radio-button [nzValue]="'or'">OR</label>
+              </nz-radio-group>
+            </ng-container>
+            <ng-container *queryRemoveButton="let rule; let removeRule=removeRule; let getDisabledState=getDisabledState">
+              <button
+                style="flex-shrink: 0;"
+                nz-button
+                nzDanger
+                (click)="removeRule(rule)"
+              >
+                <i nz-icon nzType="minus"></i>
+              </button>
+            </ng-container>
+            <ng-container *queryButtonGroup="let rule; let parentValue=parentValue; let addRule=addRule; let addRuleSet=addRuleSet; let removeRuleSet=removeRuleSet; let getDisabledState=getDisabledState">
+              <button
+                style="margin-left: 0; flex-shrink: 0;"
+                nz-button
+                (click)="addRule()"
+              >
+                <i nz-icon nzType="plus"></i>
+                {{ 'Rule' }}
+              </button>
+              <button
+                style="margin-left: 0; flex-shrink: 0;"
+                nz-button
+                (click)="addRuleSet()"
+              >
+                <i nz-icon nzType="plus"></i>
+                {{ 'Ruleset' }}
+              </button>
+              <ng-container *ngIf="!!parentValue">
+                <button
+                  style="margin-left: 0; flex-shrink: 0;"
+                  nz-button
+                  nzDanger
+                  (click)="removeRuleSet(rule)"
+                >
+                  <i nz-icon nzType="minus"></i>
+                </button>
+              </ng-container>
+            </ng-container>
+          </ngx-query-builder>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item *ngIf="cascadeValues.length != 2">
+        <nz-form-label [nzSpan]="7" nzFor="rule" nzRequired="true" [nzTooltipTitle]="'alert.setting.rule.label' | i18n">
+          {{ 'alert.setting.rule' | i18n }}
+        </nz-form-label>
+        <nz-form-control [nzSpan]="12" [nzErrorTip]="'validation.required' | i18n">
           <nz-radio-group
             [(ngModel)]="isExpr"
             (ngModelChange)="switchAlertRuleShow()"
