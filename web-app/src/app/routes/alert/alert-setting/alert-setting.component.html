@@ -260,10 +260,9 @@
                 [(ngModel)]="rule.field"
                 (ngModelChange)="onChange($event, rule)"
                 [ngModelOptions]="{ standalone: true }"
-                nz-col
-                nzSpan="8"
                 [nzDropdownMatchSelectWidth]="false"
                 [nzPlaceHolder]="'alert.setting.rule.metric.place-holder' | i18n"
+                style="width: auto"
               >
                 <nz-option
                   *ngFor="let field of getFields(rule.entity || '')"
@@ -292,11 +291,9 @@
                 [(ngModel)]="rule.operator"
                 (ngModelChange)="onChange(rule)"
                 [ngModelOptions]="{ standalone: true }"
-                nz-col
-                nzSpan="4"
                 [nzShowArrow]="false"
                 [nzDropdownMatchSelectWidth]="false"
-                style="text-align: center; font-weight: bolder"
+                style="text-align: center; font-weight: bolder; width: auto"
                 [nzDropdownStyle]="{ 'text-align': 'center', 'font-weight': 'bolder', 'font-size': 'larger' }"
                 [nzPlaceHolder]="'alert.setting.rule.operator' | i18n"
               >
@@ -317,8 +314,7 @@
                       ? ('alert.setting.rule.numeric-value.place-holder' | i18n)
                       : ('alert.setting.rule.string-value.place-holder' | i18n)
                   "
-                nz-col
-                nzSpan="10"
+                style="flex: 1"
               />
             </ng-container>
           </ngx-query-builder>
