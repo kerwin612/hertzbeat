@@ -73,35 +73,11 @@ export class AlertSettingComponent implements OnInit {
   ];
   qbClassNames: QueryBuilderClassNames = {
   };
-  currentConfig: QueryBuilderConfig = {
-    fields: {
-      age: {name: 'Age', type: 'number'},
-      gender: {
-        name: 'Gender',
-        type: 'category',
-        options: [
-          {name: 'Male', value: 'm'},
-          {name: 'Female', value: 'f'}
-        ]
-      },
-      name: {name: 'Name', type: 'string'},
-      notes: {name: 'Notes', type: 'textarea', operators: ['=', '!=']},
-      educated: {name: 'College Degree?', type: 'boolean'},
-      birthday: {name: 'Birthday', type: 'date', operators: ['=', '<=', '>'],
-        defaultValue: (() => new Date())
-      },
-      school: {name: 'School', type: 'string', nullable: true},
-      occupation: {
-        name: 'Occupation',
-        type: 'category',
-        options: [
-          {name: 'Student', value: 'student'},
-          {name: 'Teacher', value: 'teacher'},
-          {name: 'Unemployed', value: 'unemployed'},
-          {name: 'Scientist', value: 'scientist'}
-        ]
-      }
-    }
+  qbConfig: QueryBuilderConfig = {
+    levelLimit: 3,
+    rulesLimit: 5,
+    getInputType: () => 'custom',
+    fields: {}
   };
   ngOnInit(): void {
     this.loadAlertDefineTable();
@@ -413,6 +389,38 @@ export class AlertSettingComponent implements OnInit {
   currentMetrics: any[] = [];
   alertRules: any[] = [{}];
   isExpr = false;
+  private getOperatorsByType(type: number): string[] {
+    if (type === 0 || type === 3) {
+      return ['>', '<', '==', '!=', '<=', '>=', 'exists', '!exists'];
+    } else if (type === 1) {
+      return ['equals', '!equals', 'contains', '!contains', 'matches', '!matches', 'exists', '!exists'];
+    }
+    return [];
+  }
+
+  getOperatorLabelByType = (operator: string) => {
+    switch (operator) {
+      case 'equals':
+        return 'alert.setting.rule.operator.str-equals';
+      case '!equals':
+        return 'alert.setting.rule.operator.str-no-equals';
+      case 'contains':
+        return 'alert.setting.rule.operator.str-contains';
+      case '!contains':
+        return 'alert.setting.rule.operator.str-no-contains';
+      case 'matches':
+        return 'alert.setting.rule.operator.str-matches';
+      case '!matches':
+        return 'alert.setting.rule.operator.str-no-matches';
+      case 'exists':
+        return 'alert.setting.rule.operator.exists';
+      case '!exists':
+        return 'alert.setting.rule.operator.no-exists';
+      default:
+        return operator;
+    }
+  }
+
   caseInsensitiveFilter: NzCascaderFilter = (i, p) => {
     return p.some(o => {
       const label = o.label;
@@ -429,14 +437,19 @@ export class AlertSettingComponent implements OnInit {
           if (metrics.value == values[1]) {
             this.currentMetrics = [];
             if (metrics.children) {
+              let fields: any = {};
               metrics.children.forEach(item => {
                 this.currentMetrics.push(item);
+                fields[item.value] = { name: item.label, type: item.type, unit: item.unit, operators: this.getOperatorsByType(item.type) };
               });
-              this.currentMetrics.push({
+              let fixedItem = {
                 value: 'system_value_row_count',
                 type: 0,
                 label: this.i18nSvc.fanyi('alert.setting.target.system_value_row_count')
-              });
+              };
+              this.currentMetrics.push(fixedItem);
+              fields[fixedItem.value] = { name: fixedItem.label, type: fixedItem.type, operators: this.getOperatorsByType(fixedItem.type) };
+              this.qbConfig = { ...this.qbConfig, fields };
             }
           }
         });

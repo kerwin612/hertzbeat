@@ -88,89 +88,89 @@
   [nzScroll]="{ x: '1240px' }"
 >
   <thead>
-    <tr>
-      <th nzAlign="center" nzLeft nzWidth="3%" [(nzChecked)]="checkedAll" (nzCheckedChange)="onAllChecked($event)"></th>
-      <th nzAlign="center" nzWidth="16%">{{ 'alert.setting.target' | i18n }}</th>
-      <th nzAlign="center" nzWidth="14%">{{ 'alert.setting.expr' | i18n }}</th>
-      <th nzAlign="center" nzWidth="8%">{{ 'alert.priority' | i18n }}</th>
-      <th nzAlign="center" nzWidth="8%">{{ 'alert.setting.times' | i18n }}</th>
-      <th nzAlign="center" nzWidth="20%">{{ 'alert.setting.template' | i18n }}</th>
-      <th nzAlign="center" nzWidth="8%">{{ 'alert.setting.default' | i18n }}</th>
-      <th nzAlign="center" nzWidth="8%">{{ 'alert.setting.enable' | i18n }}</th>
-      <th nzAlign="center" nzWidth="15%">{{ 'common.edit' | i18n }}</th>
-    </tr>
+  <tr>
+    <th nzAlign="center" nzLeft nzWidth="3%" [(nzChecked)]="checkedAll" (nzCheckedChange)="onAllChecked($event)"></th>
+    <th nzAlign="center" nzWidth="16%">{{ 'alert.setting.target' | i18n }}</th>
+    <th nzAlign="center" nzWidth="14%">{{ 'alert.setting.expr' | i18n }}</th>
+    <th nzAlign="center" nzWidth="8%">{{ 'alert.priority' | i18n }}</th>
+    <th nzAlign="center" nzWidth="8%">{{ 'alert.setting.times' | i18n }}</th>
+    <th nzAlign="center" nzWidth="20%">{{ 'alert.setting.template' | i18n }}</th>
+    <th nzAlign="center" nzWidth="8%">{{ 'alert.setting.default' | i18n }}</th>
+    <th nzAlign="center" nzWidth="8%">{{ 'alert.setting.enable' | i18n }}</th>
+    <th nzAlign="center" nzWidth="15%">{{ 'common.edit' | i18n }}</th>
+  </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let data of fixedTable.data">
-      <td nzAlign="center" nzLeft [nzChecked]="checkedDefineIds.has(data.id)" (nzCheckedChange)="onItemChecked(data.id, $event)"></td>
-      <td nzAlign="center">
+  <tr *ngFor="let data of fixedTable.data">
+    <td nzAlign="center" nzLeft [nzChecked]="checkedDefineIds.has(data.id)" (nzCheckedChange)="onItemChecked(data.id, $event)"></td>
+    <td nzAlign="center">
         <span *ngIf="data.field">
           {{ 'monitor.app.' + data.app | i18n }} / {{ 'monitor.app.' + data.app + '.metrics.' + data.metric | i18nElse : data.metric }} /
           {{ 'monitor.app.' + data.app + '.metrics.' + data.metric + '.metric.' + data.field | i18nElse : data.field }}
         </span>
-        <span *ngIf="!data.field && data.metric === 'availability'">
+      <span *ngIf="!data.field && data.metric === 'availability'">
           {{ 'monitor.app.' + data.app | i18n }} / {{ 'monitor.availability' | i18n }}
         </span>
-      </td>
-      <td nzAlign="center">
-        <span>{{ data.expr }}</span>
-      </td>
-      <td nzAlign="center">
-        <nz-tag *ngIf="data.priority == 0" nzColor="red">
-          <i nz-icon nzType="bell" nzTheme="outline"></i>
-          <span>{{ 'alert.priority.0' | i18n }}</span>
-        </nz-tag>
-        <nz-tag *ngIf="data.priority == 1" nzColor="orange">
-          <i nz-icon nzType="bell" nzTheme="outline"></i>
-          <span>{{ 'alert.priority.1' | i18n }}</span>
-        </nz-tag>
-        <nz-tag *ngIf="data.priority == 2" nzColor="yellow">
-          <i nz-icon nzType="bell" nzTheme="outline"></i>
-          <span>{{ 'alert.priority.2' | i18n }}</span>
-        </nz-tag>
-      </td>
-      <td nzAlign="center">{{ data.times }}</td>
-      <td nzAlign="center">{{ data.template }}</td>
-      <td nzAlign="center">
-        <nz-switch [(ngModel)]="data.preset" (ngModelChange)="updateAlertDefine(data)" name="preset"></nz-switch>
-      </td>
-      <td nzAlign="center">
-        <nz-switch [(ngModel)]="data.enable" (ngModelChange)="updateAlertDefine(data)" name="enable"></nz-switch>
-      </td>
-      <td nzAlign="center">
-        <div class="actions">
-          <button
-            nz-button
-            nzType="primary"
-            (click)="onOpenConnectModal(data.id, data.app)"
-            nz-tooltip
-            [disabled]="data.preset"
-            [nzTooltipTitle]="'alert.setting.connect' | i18n"
-          >
-            <i nz-icon nzType="link" nzTheme="outline"></i>
-          </button>
-          <button
-            nz-button
-            nzType="primary"
-            (click)="onEditOneAlertDefine(data.id)"
-            nz-tooltip
-            [nzTooltipTitle]="'alert.setting.edit' | i18n"
-          >
-            <i nz-icon nzType="edit" nzTheme="outline"></i>
-          </button>
-          <button
-            nz-button
-            nzDanger
-            nzType="primary"
-            (click)="onDeleteOneAlertDefine(data.id)"
-            nz-tooltip
-            [nzTooltipTitle]="'alert.setting.delete' | i18n"
-          >
-            <i nz-icon nzType="delete" nzTheme="outline"></i>
-          </button>
-        </div>
-      </td>
-    </tr>
+    </td>
+    <td nzAlign="center">
+      <span>{{ data.expr }}</span>
+    </td>
+    <td nzAlign="center">
+      <nz-tag *ngIf="data.priority == 0" nzColor="red">
+        <i nz-icon nzType="bell" nzTheme="outline"></i>
+        <span>{{ 'alert.priority.0' | i18n }}</span>
+      </nz-tag>
+      <nz-tag *ngIf="data.priority == 1" nzColor="orange">
+        <i nz-icon nzType="bell" nzTheme="outline"></i>
+        <span>{{ 'alert.priority.1' | i18n }}</span>
+      </nz-tag>
+      <nz-tag *ngIf="data.priority == 2" nzColor="yellow">
+        <i nz-icon nzType="bell" nzTheme="outline"></i>
+        <span>{{ 'alert.priority.2' | i18n }}</span>
+      </nz-tag>
+    </td>
+    <td nzAlign="center">{{ data.times }}</td>
+    <td nzAlign="center">{{ data.template }}</td>
+    <td nzAlign="center">
+      <nz-switch [(ngModel)]="data.preset" (ngModelChange)="updateAlertDefine(data)" name="preset"></nz-switch>
+    </td>
+    <td nzAlign="center">
+      <nz-switch [(ngModel)]="data.enable" (ngModelChange)="updateAlertDefine(data)" name="enable"></nz-switch>
+    </td>
+    <td nzAlign="center">
+      <div class="actions">
+        <button
+          nz-button
+          nzType="primary"
+          (click)="onOpenConnectModal(data.id, data.app)"
+          nz-tooltip
+          [disabled]="data.preset"
+          [nzTooltipTitle]="'alert.setting.connect' | i18n"
+        >
+          <i nz-icon nzType="link" nzTheme="outline"></i>
+        </button>
+        <button
+          nz-button
+          nzType="primary"
+          (click)="onEditOneAlertDefine(data.id)"
+          nz-tooltip
+          [nzTooltipTitle]="'alert.setting.edit' | i18n"
+        >
+          <i nz-icon nzType="edit" nzTheme="outline"></i>
+        </button>
+        <button
+          nz-button
+          nzDanger
+          nzType="primary"
+          (click)="onDeleteOneAlertDefine(data.id)"
+          nz-tooltip
+          [nzTooltipTitle]="'alert.setting.delete' | i18n"
+        >
+          <i nz-icon nzType="delete" nzTheme="outline"></i>
+        </button>
+      </div>
+    </td>
+  </tr>
   </tbody>
 </nz-table>
 
@@ -208,14 +208,44 @@
           {{ 'alert.setting.rule' | i18n }}
         </nz-form-label>
         <nz-form-control [nzSpan]="12" [nzErrorTip]="'validation.required' | i18n">
-          <ngx-query-builder [classNames]='qbClassNames' [config]='currentConfig'>
-            <ng-container *querySwitchGroup="let rule; let onChange=onChange; let getDisabledState=getDisabledState">
-              <nz-radio-group style="text-wrap: nowrap;" [(ngModel)]="rule.condition" (ngModelChange)="onChange(rule.condition)" nzButtonStyle="solid" [required]="true" [ngModelOptions]="{standalone: true}">
+          <ngx-query-builder [classNames]='qbClassNames' [config]='qbConfig'>
+            <ng-container *querySwitchGroup="let rule; let onChange = onChange">
+              <nz-radio-group style="white-space: nowrap;" [(ngModel)]="rule.condition" (ngModelChange)="onChange(rule.condition)" nzButtonStyle="solid" [required]="true" [ngModelOptions]="{standalone: true}">
                 <label nz-radio-button [nzValue]="'and'">AND</label>
                 <label nz-radio-button [nzValue]="'or'">OR</label>
               </nz-radio-group>
             </ng-container>
-            <ng-container *queryRemoveButton="let rule; let removeRule=removeRule; let getDisabledState=getDisabledState">
+            <ng-container *queryRulesetAddRuleButton="let rule; let addRule = addRule">
+              <button
+                style="margin-left: 0; flex-shrink: 0;"
+                nz-button
+                (click)="addRule()"
+              >
+                <i nz-icon nzType="plus"></i>
+                {{ 'Rule' }}
+              </button>
+            </ng-container>
+            <ng-container *queryRulesetAddRulesetButton="let rule; let addRuleSet = addRuleSet">
+              <button
+                style="margin-left: 0; flex-shrink: 0;"
+                nz-button
+                (click)="addRuleSet()"
+              >
+                <i nz-icon nzType="plus"></i>
+                {{ 'Ruleset' }}
+              </button>
+            </ng-container>
+            <ng-container *queryRulesetRemoveButton="let rule; let removeRuleSet = removeRuleSet">
+              <button
+                style="margin-left: 0; flex-shrink: 0;"
+                nz-button
+                nzDanger
+                (click)="removeRuleSet(rule)"
+              >
+                <i nz-icon nzType="minus"></i>
+              </button>
+            </ng-container>
+            <ng-container *queryRuleRemoveButton="let rule; let removeRule = removeRule">
               <button
                 style="flex-shrink: 0;"
                 nz-button
@@ -225,33 +255,71 @@
                 <i nz-icon nzType="minus"></i>
               </button>
             </ng-container>
-            <ng-container *queryButtonGroup="let rule; let parentValue=parentValue; let addRule=addRule; let addRuleSet=addRuleSet; let removeRuleSet=removeRuleSet; let getDisabledState=getDisabledState">
-              <button
-                style="margin-left: 0; flex-shrink: 0;"
-                nz-button
-                (click)="addRule()"
+            <ng-container *queryField="let rule; let getFields = getFields; let onChange = onChange">
+              <nz-select
+                [(ngModel)]="rule.field"
+                (ngModelChange)="onChange($event, rule)"
+                [ngModelOptions]="{ standalone: true }"
+                nz-col
+                nzSpan="8"
+                [nzDropdownMatchSelectWidth]="false"
+                [nzPlaceHolder]="'alert.setting.rule.metric.place-holder' | i18n"
               >
-                <i nz-icon nzType="plus"></i>
-                {{ 'Rule' }}
-              </button>
-              <button
-                style="margin-left: 0; flex-shrink: 0;"
-                nz-button
-                (click)="addRuleSet()"
-              >
-                <i nz-icon nzType="plus"></i>
-                {{ 'Ruleset' }}
-              </button>
-              <ng-container *ngIf="!!parentValue">
-                <button
-                  style="margin-left: 0; flex-shrink: 0;"
-                  nz-button
-                  nzDanger
-                  (click)="removeRuleSet(rule)"
+                <nz-option
+                  *ngFor="let field of getFields(rule.entity || '')"
+                  [nzValue]="field.value"
+                  [nzLabel]="field.name ? field.name : field.value"
+                  nzCustomContent
                 >
-                  <i nz-icon nzType="minus"></i>
-                </button>
-              </ng-container>
+                  {{ field.name ? field.name : field.value }}
+                  <nz-tag [nzColor]="field.type === 0 ? 'success' : 'processing'">
+                    {{
+                      field.type === 0
+                        ? ('alert.setting.number' | i18n)
+                        : field.type === 3
+                          ? ('alert.setting.time' | i18n)
+                          : ('alert.setting.string' | i18n)
+                    }}
+                  </nz-tag>
+                  <nz-tag *ngIf="field.unit">
+                    {{ field.unit }}
+                  </nz-tag>
+                </nz-option>
+              </nz-select>
+            </ng-container>
+            <ng-container *queryOperator="let rule; let operators = operators; let onChange = onChange">
+              <nz-select
+                [(ngModel)]="rule.operator"
+                (ngModelChange)="onChange(rule)"
+                [ngModelOptions]="{ standalone: true }"
+                nz-col
+                nzSpan="4"
+                [nzShowArrow]="false"
+                [nzDropdownMatchSelectWidth]="false"
+                style="text-align: center; font-weight: bolder"
+                [nzDropdownStyle]="{ 'text-align': 'center', 'font-weight': 'bolder', 'font-size': 'larger' }"
+                [nzPlaceHolder]="'alert.setting.rule.operator' | i18n"
+              >
+                <nz-option *ngFor="let operator of operators" [nzValue]="operator" [nzLabel]="getOperatorLabelByType(operator) | i18n"></nz-option>
+              </nz-select>
+            </ng-container>
+            <ng-container *queryInput="let rule; let field = field; let options = options; type: 'custom'">
+              <input
+                nz-input
+                [disabled]="rule.operator == 'exists' || rule.operator == '!exists'"
+                [type]="field.type === 0 ? 'number' : 'text'"
+                [(ngModel)]="rule.value"
+                [ngModelOptions]="{ standalone: true }"
+                [placeholder]="
+                    rule.operator == 'exists' || rule.operator == '!exists'
+                      ? ''
+                      : field.type === 0
+                      ? ('alert.setting.rule.numeric-value.place-holder' | i18n)
+                      : ('alert.setting.rule.string-value.place-holder' | i18n)
+                  "
+                nz-col
+                nzSpan="10"
+              />
             </ng-container>
           </ngx-query-builder>
         </nz-form-control>
@@ -340,8 +408,8 @@
                         item.type === 0
                           ? ('alert.setting.number' | i18n)
                           : item.type === 3
-                          ? ('alert.setting.time' | i18n)
-                          : ('alert.setting.string' | i18n)
+                            ? ('alert.setting.time' | i18n)
+                            : ('alert.setting.string' | i18n)
                       }}
                     </nz-tag>
                     <nz-tag *ngIf="item.unit">
@@ -535,7 +603,7 @@
                 </nz-list-item>
                 <nz-list-item *ngFor="let item of filterMetrics(currentMetrics, cascadeValues)">
                   <code
-                    >&#36;{{ '{' + item.value + '}' }} :
+                  >&#36;{{ '{' + item.value + '}' }} :
                     {{
                       item.value == item.label
                         ? ('alert.setting.template.other-value' | i18n)
@@ -625,17 +693,17 @@
     >
       <nz-table #t [nzData]="$asTransferItems(items)" nzSize="small">
         <thead>
-          <tr>
-            <th [nzChecked]="stat.checkAll" [nzIndeterminate]="stat.checkHalf" (nzCheckedChange)="onItemSelectAll($event)"></th>
-            <th *ngIf="direction == 'left'">{{ 'alert.setting.connect.left' | i18n }}</th>
-            <th *ngIf="direction == 'right'">{{ 'alert.setting.connect.right' | i18n }}</th>
-          </tr>
+        <tr>
+          <th [nzChecked]="stat.checkAll" [nzIndeterminate]="stat.checkHalf" (nzCheckedChange)="onItemSelectAll($event)"></th>
+          <th *ngIf="direction == 'left'">{{ 'alert.setting.connect.left' | i18n }}</th>
+          <th *ngIf="direction == 'right'">{{ 'alert.setting.connect.right' | i18n }}</th>
+        </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let data of t.data" (click)="onItemSelect(data)">
-            <td [nzChecked]="!!data.checked" (nzCheckedChange)="onItemSelect(data)"></td>
-            <td>{{ data.name }}</td>
-          </tr>
+        <tr *ngFor="let data of t.data" (click)="onItemSelect(data)">
+          <td [nzChecked]="!!data.checked" (nzCheckedChange)="onItemSelect(data)"></td>
+          <td>{{ data.name }}</td>
+        </tr>
         </tbody>
       </nz-table>
     </ng-template>
