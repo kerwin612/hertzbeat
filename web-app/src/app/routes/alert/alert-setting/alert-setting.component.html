@@ -208,7 +208,13 @@
           {{ 'alert.setting.rule' | i18n }}
         </nz-form-label>
         <nz-form-control [nzSpan]="12" [nzErrorTip]="'validation.required' | i18n">
-          <ngx-query-builder [classNames]='qbClassNames' [config]='qbConfig'>
+          <ngx-query-builder
+            [classNames]='qbClassNames'
+            [config]='qbConfig'
+            [ngModelOptions]="{standalone: true}"
+            [(ngModel)]="qbData"
+            (ngModelChange)="qbDataChanged($event)"
+          >
             <ng-container *querySwitchGroup="let rule; let onChange = onChange">
               <nz-radio-group style="white-space: nowrap;" [(ngModel)]="rule.condition" (ngModelChange)="onChange(rule.condition)" nzButtonStyle="solid" [required]="true" [ngModelOptions]="{standalone: true}">
                 <label nz-radio-button [nzValue]="'and'">AND</label>
@@ -300,12 +306,13 @@
                 <nz-option *ngFor="let operator of operators" [nzValue]="operator" [nzLabel]="getOperatorLabelByType(operator) | i18n"></nz-option>
               </nz-select>
             </ng-container>
-            <ng-container *queryInput="let rule; let field = field; let options = options; type: 'custom'">
+            <ng-container *queryInput="let rule; let field = field; let onChange = onChange; type: 'custom'">
               <input
                 nz-input
                 [disabled]="rule.operator == 'exists' || rule.operator == '!exists'"
                 [type]="field.type === 0 ? 'number' : 'text'"
                 [(ngModel)]="rule.value"
+                (ngModelChange)="onChange($event)"
                 [ngModelOptions]="{ standalone: true }"
                 [placeholder]="
                     rule.operator == 'exists' || rule.operator == '!exists'

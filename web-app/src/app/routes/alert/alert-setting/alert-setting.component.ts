@@ -29,7 +29,7 @@ import { TransferChange, TransferItem } from 'ng-zorro-antd/transfer';
 import { NzUploadChangeParam } from 'ng-zorro-antd/upload';
 import { zip } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
-import { QueryBuilderConfig, QueryBuilderClassNames } from 'ngx-query-builder';
+import { Rule, RuleSet, QueryBuilderConfig, QueryBuilderClassNames } from 'ngx-query-builder';
 
 import { AlertDefine } from '../../../pojo/AlertDefine';
 import { AlertDefineBind } from '../../../pojo/AlertDefineBind';
@@ -79,6 +79,11 @@ export class AlertSettingComponent implements OnInit {
     getInputType: () => 'custom',
     fields: {}
   };
+  qbData: RuleSet = {
+    condition: 'and',
+    rules: []
+  };
+
   ngOnInit(): void {
     this.loadAlertDefineTable();
     // 查询监控层级
@@ -389,6 +394,7 @@ export class AlertSettingComponent implements OnInit {
   currentMetrics: any[] = [];
   alertRules: any[] = [{}];
   isExpr = false;
+
   private getOperatorsByType(type: number): string[] {
     if (type === 0 || type === 3) {
       return ['>', '<', '==', '!=', '<=', '>=', 'exists', '!exists'];
@@ -397,6 +403,28 @@ export class AlertSettingComponent implements OnInit {
     }
     return [];
   }
+
+  private rule2expr(rule: Rule): string {
+    if (rule.value === undefined) {
+      return '';
+    }
+    return `(${rule.field} ${rule.operator} ${rule.value})`;
+  }
+
+  private ruleset2expr(ruleset: RuleSet): string {
+    if (ruleset.rules.length === 0) {
+      return '';
+    }
+    return `(${
+      ruleset.rules.map(rule =>
+        !!(rule as RuleSet).rules ? this.ruleset2expr(rule as RuleSet) : this.rule2expr(rule as Rule)
+      ).filter(s => !!s).join(` ${ruleset.condition} `)
+    })`;
+  }
+
+  // private expr2ruleset(expr: string): RuleSet {
+  //
+  // }
 
   getOperatorLabelByType = (operator: string) => {
     switch (operator) {
@@ -419,7 +447,11 @@ export class AlertSettingComponent implements OnInit {
       default:
         return operator;
     }
-  }
+  };
+
+  qbDataChanged = (data: RuleSet) => {
+    console.log(this.ruleset2expr(data));
+  };
 
   caseInsensitiveFilter: NzCascaderFilter = (i, p) => {
     return p.some(o => {
@@ -427,6 +459,7 @@ export class AlertSettingComponent implements OnInit {
       return !!label && label.toLowerCase().indexOf(i.toLowerCase()) !== -1;
     });
   };
+
   cascadeOnChange(values: string[]): void {
     if (values == null || values.length != 3) {
       return;
