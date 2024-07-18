@@ -154,6 +154,7 @@
           nzType="primary"
           (click)="onEditOneAlertDefine(data.id)"
           nz-tooltip
+          [nzLoading]="isLoadingEdit === data.id"
           [nzTooltipTitle]="'alert.setting.edit' | i18n"
         >
           <i nz-icon nzType="edit" nzTheme="outline"></i>

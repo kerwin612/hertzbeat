@@ -194,8 +194,9 @@ export class AlertSettingComponent implements OnInit {
   }
 
   editAlertDefine(alertDefineId: number) {
+    if (this.isLoadingEdit !== -1) return;
+    this.isLoadingEdit = alertDefineId;
     this.isManageModalAdd = false;
-    this.isManageModalVisible = true;
     this.isManageModalOkLoading = false;
     // 查询告警定义信息
     const getDefine$ = this.alertDefineSvc
@@ -203,6 +204,8 @@ export class AlertSettingComponent implements OnInit {
       .pipe(
         finalize(() => {
           getDefine$.unsubscribe();
+          this.isLoadingEdit = -1;
+          this.isManageModalVisible = true;
         })
       )
       .subscribe(
@@ -390,6 +393,7 @@ export class AlertSettingComponent implements OnInit {
   // end: 列表多选逻辑
 
   // start 新增修改告警定义model
+  isLoadingEdit = -1;
   isManageModalVisible = false;
   isManageModalOkLoading = false;
   isManageModalAdd = true;
