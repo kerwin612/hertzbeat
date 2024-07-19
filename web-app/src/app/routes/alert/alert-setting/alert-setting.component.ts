@@ -27,7 +27,7 @@ import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { NzTableQueryParams } from 'ng-zorro-antd/table';
 import { TransferChange, TransferItem } from 'ng-zorro-antd/transfer';
 import { NzUploadChangeParam } from 'ng-zorro-antd/upload';
-import { Rule, RuleSet, QueryBuilderConfig, QueryBuilderClassNames } from 'ngx-query-builder';
+import { Rule, RuleSet, QueryBuilderConfig, QueryBuilderClassNames } from '@kerwin612/ngx-query-builder';
 import { zip } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 
@@ -427,8 +427,8 @@ export class AlertSettingComponent implements OnInit {
       return '';
     }
     return `(${ruleset.rules
-      .map(rule => (!!(rule as RuleSet).rules ? this.ruleset2expr(rule as RuleSet) : this.rule2expr(rule as Rule)))
-      .filter(s => !!s)
+      .map((rule: any) => (!!(rule as RuleSet).rules ? this.ruleset2expr(rule as RuleSet) : this.rule2expr(rule as Rule)))
+      .filter((s: any) => !!s)
       .join(` ${ruleset.condition} `)})`;
   }
 
